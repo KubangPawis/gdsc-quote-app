@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/util/quote_widget_small.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -82,21 +83,7 @@ class _HomePageState extends State<HomePage> {
                 String author = quoteList[index][0];
                 String quoteText = quoteList[index][1];
 
-                return Padding(
-                  padding: const EdgeInsets.only(bottom: 22),
-                  child: Container(
-                    padding: EdgeInsets.symmetric(horizontal: 12, vertical: 18),
-                    decoration: BoxDecoration(
-                      color: const Color.fromARGB(255, 255, 143, 135),
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: Column(children: [
-                      Text(quoteText, style: TextStyle(fontSize: 12)),
-                      SizedBox(height: 3),
-                      Text(author, style: TextStyle(fontSize: 11)),
-                    ]),
-                  ),
-                );
+                return QuoteWidgetSmall(author: author, quoteText: quoteText);
               },
             )),
           ],
