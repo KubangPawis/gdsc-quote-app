@@ -41,15 +41,28 @@ class _HomePageState extends State<HomePage> {
           IconButton(onPressed: () {}, icon: Icon(Icons.logout, size: 24))
         ],
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        currentIndex: _currentPageIndex,
-        items: [
-          BottomNavigationBarItem(
-              label: 'Home', icon: Icon(Icons.home, size: 24)),
-          BottomNavigationBarItem(
-              label: 'Profile', icon: Icon(Icons.person, size: 24)),
-        ],
+      bottomNavigationBar: Container(
+        decoration: BoxDecoration(
+          border: Border(
+            top:
+                BorderSide(color: Color.fromARGB(255, 144, 173, 199), width: 2),
+          ),
+        ),
+        child: BottomNavigationBar(
+          type: BottomNavigationBarType.fixed,
+          currentIndex: _currentPageIndex,
+          onTap: (value) {},
+          backgroundColor: Colors.white,
+          elevation: 0,
+          selectedItemColor: Colors.black,
+          unselectedItemColor: Colors.black,
+          items: [
+            BottomNavigationBarItem(
+                label: 'Home', icon: Icon(Icons.home, size: 24)),
+            BottomNavigationBarItem(
+                label: 'Profile', icon: Icon(Icons.person, size: 24)),
+          ],
+        ),
       ),
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 38),
