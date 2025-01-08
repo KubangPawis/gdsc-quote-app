@@ -26,79 +26,104 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
+    return DefaultTabController(
+      length: 2,
+      child: Scaffold(
         backgroundColor: Colors.white,
-        toolbarHeight: 100,
-        centerTitle: false,
-        title: Text('QUODE',
-            style: TextStyle(
-              fontSize: 22,
-              fontWeight: FontWeight.bold,
-            )),
-        actions: [
-          IconButton(onPressed: () {}, icon: Icon(Icons.logout, size: 24))
-        ],
-      ),
-      bottomNavigationBar: Container(
-        decoration: BoxDecoration(
-          border: Border(
-            top:
-                BorderSide(color: Color.fromARGB(255, 144, 173, 199), width: 2),
-          ),
-        ),
-        child: BottomNavigationBar(
-          type: BottomNavigationBarType.fixed,
-          currentIndex: _currentPageIndex,
-          onTap: (value) {},
+        appBar: AppBar(
           backgroundColor: Colors.white,
-          elevation: 0,
-          selectedItemColor: Colors.black,
-          unselectedItemColor: Colors.black,
-          items: [
-            BottomNavigationBarItem(
-                label: 'Home', icon: Icon(Icons.home, size: 24)),
-            BottomNavigationBarItem(
-                label: 'Profile', icon: Icon(Icons.person, size: 24)),
+          toolbarHeight: 80,
+          centerTitle: false,
+          bottom: TabBar(tabs: [
+            Tab(text: 'Your Quotes'),
+            Tab(text: 'Explore'),
+          ]),
+          title: Text('QUODE',
+              style: TextStyle(
+                fontSize: 22,
+                fontWeight: FontWeight.bold,
+              )),
+          actions: [
+            IconButton(onPressed: () {}, icon: Icon(Icons.logout, size: 24))
           ],
         ),
-      ),
-      body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 38),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
+
+        // BOTTOM NAVIGATION BAR
+        bottomNavigationBar: Container(
+          decoration: BoxDecoration(
+            border: Border(
+              top: BorderSide(
+                  color: Color.fromARGB(255, 144, 173, 199), width: 2),
+            ),
+          ),
+          child: BottomNavigationBar(
+            type: BottomNavigationBarType.fixed,
+            currentIndex: _currentPageIndex,
+            onTap: (value) {},
+            backgroundColor: Colors.white,
+            elevation: 0,
+            selectedItemColor: Colors.black,
+            unselectedItemColor: Colors.black,
+            items: [
+              BottomNavigationBarItem(
+                  label: 'Home', icon: Icon(Icons.home, size: 24)),
+              BottomNavigationBarItem(
+                  label: 'Profile', icon: Icon(Icons.person, size: 24)),
+            ],
+          ),
+        ),
+
+        //BODY
+        body: Column(
           children: [
-            // Greeting Text
-            Padding(
-              padding: EdgeInsets.only(top: 16, bottom: 48),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
+            Expanded(
+              child: TabBarView(
                 children: [
-                  Text('Hello Peter',
-                      style:
-                          TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
-                  Text('Energize your day with a quote!',
-                      style:
-                          TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 38),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // Greeting Text
+                        Padding(
+                          padding: EdgeInsets.only(top: 16, bottom: 48),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text('Hello Peter',
+                                  style: TextStyle(
+                                      fontSize: 22,
+                                      fontWeight: FontWeight.bold)),
+                              Text('Energize your day with a quote!',
+                                  style: TextStyle(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.bold)),
+                            ],
+                          ),
+                        ),
+
+                        // Quote List
+                        Expanded(
+                            child: ListView.builder(
+                          itemCount: quoteList.length,
+                          itemBuilder: (context, index) {
+                            // Get key value pairs in map
+                            String author = quoteList[index][0];
+                            String quoteText = quoteList[index][1];
+
+                            return QuoteWidgetSmall(
+                                author: author, quoteText: quoteText);
+                          },
+                        )),
+                      ],
+                    ),
+                  ),
+                  Center(child: Text('hatdog')),
                 ],
               ),
             ),
-
-            // Quote List
-            Expanded(
-                child: ListView.builder(
-              itemCount: quoteList.length,
-              itemBuilder: (context, index) {
-                // Get key value pairs in map
-                String author = quoteList[index][0];
-                String quoteText = quoteList[index][1];
-
-                return QuoteWidgetSmall(author: author, quoteText: quoteText);
-              },
-            )),
           ],
         ),
       ),
