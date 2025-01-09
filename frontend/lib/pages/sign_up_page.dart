@@ -1,14 +1,20 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:frontend/pages/log_in_page.dart';
+import 'package:frontend/services/auth_service.dart';
 
 class SignUpPage extends StatefulWidget {
   _SignUpPageState createState() => _SignUpPageState(); 
 }
 
 class _SignUpPageState extends State<SignUpPage> {
+  final _auth = AuthService();
+
   final _formKey = GlobalKey<FormState>();
   bool _obscurePassword = true;
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
+  final  _emailController = TextEditingController();
+  final  _passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -105,12 +111,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     backgroundColor: Color(0xFF283FB1),
                     padding: EdgeInsets.symmetric(vertical: 15.0),
                   ),
-                  onPressed: () {
-                    if (_formKey.currentState?.validate() ?? false) {
-                      print("Email: ${_emailController.text}");
-                      print("Password: ${_passwordController.text}");
-                    }
-                  },
+                  onPressed: _signup,
                 child: Text(
                   "Sign Up",
                   style: TextStyle(
@@ -174,5 +175,18 @@ class _SignUpPageState extends State<SignUpPage> {
           )
         )
       );
+  }
+
+  goToHome(BuildContext context) => Navigator.push(
+    context,
+    MaterialPageRoute(builder: (context) => LoginPage()) //Change page
+    );
+
+  _signup() async{
+    final user = await _auth.createUserWithEmailAndPassword(_emailController.text, _passwordController.text);
+    if (user != null){
+      log("User Created Succesfully");
+      goToHome(context);
+    }
   }
 }
