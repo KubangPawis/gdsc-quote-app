@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
 class QuoteWidgetSmall extends StatelessWidget {
+  final Color widgetColor;
   final String quoteText;
   final String author;
   final Function(BuildContext)? deleteQuote;
 
   const QuoteWidgetSmall(
       {super.key,
+      required this.widgetColor,
       required this.quoteText,
       required this.author,
       this.deleteQuote});
@@ -23,7 +25,7 @@ class QuoteWidgetSmall extends StatelessWidget {
             SlidableAction(
               onPressed: deleteQuote,
               icon: Icons.delete,
-              backgroundColor: Colors.red.shade300,
+              backgroundColor: Color.fromARGB(255, 255, 119, 119),
               foregroundColor: Colors.white,
               borderRadius: BorderRadius.circular(10),
             ),
@@ -34,8 +36,7 @@ class QuoteWidgetSmall extends StatelessWidget {
           child: Container(
             padding: EdgeInsets.all(24),
             decoration: BoxDecoration(
-                color: const Color.fromARGB(255, 255, 143, 135),
-                borderRadius: BorderRadius.circular(10)),
+                color: widgetColor, borderRadius: BorderRadius.circular(10)),
             child: Column(children: [
               Text(quoteText,
                   style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),

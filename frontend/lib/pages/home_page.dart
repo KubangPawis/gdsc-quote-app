@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/pages/user_quotes_page.dart';
-import 'package:frontend/pages/profile_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -17,7 +16,6 @@ class _HomePageState extends State<HomePage>
 
   final List _pages = [
     UserQuotesPage(),
-    ProfilePage(),
   ];
 
   @override
@@ -26,7 +24,6 @@ class _HomePageState extends State<HomePage>
     _tabController = TabController(length: 2, vsync: this);
     _tabController.addListener(() {
       setState(() {
-        // Hide BottomNavigationBar on the third tab (index 2)
         _isBottomNavVisible = _tabController.index != 1;
       });
     });
