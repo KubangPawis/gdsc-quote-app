@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/util/quote_widget_small.dart';
+import 'package:frontend/pages/user_quotes_page.dart';
+import 'package:frontend/pages/profile_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -8,25 +9,38 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
-  List<List<String>> quoteList = [
-    ['Winston Churchill', 'If you are going through hell, keep going.'],
-    ['Winston Churchill', 'If you are going through hell, keep going.'],
-    ['Winston Churchill', 'If you are going through hell, keep going.'],
-    ['Winston Churchill', 'If you are going through hell, keep going.'],
-    ['Winston Churchill', 'If you are going through hell, keep going.'],
-    ['Winston Churchill', 'If you are going through hell, keep going.'],
-    ['Winston Churchill', 'If you are going through hell, keep going.'],
-    ['Winston Churchill', 'If you are going through hell, keep going.'],
-    ['Winston Churchill', 'If you are going through hell, keep going.'],
-    ['Winston Churchill', 'If you are going through hell, keep going.'],
+class _HomePageState extends State<HomePage>
+    with SingleTickerProviderStateMixin {
+  int _currentPageIndex = 0;
+  late TabController _tabController;
+  bool _isBottomNavVisible = true;
+
+  final List _pages = [
+    UserQuotesPage(),
+    ProfilePage(),
   ];
 
-  int _currentPageIndex = 0;
+  @override
+  void initState() {
+    super.initState();
+    _tabController = TabController(length: 2, vsync: this);
+    _tabController.addListener(() {
+      setState(() {
+        // Hide BottomNavigationBar on the third tab (index 2)
+        _isBottomNavVisible = _tabController.index != 1;
+      });
+    });
+  }
 
-  void deleteQuote(int index) {
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
+  }
+
+  void _navigateBottomBar(int index) {
     setState(() {
-      quoteList.removeAt(index);
+      _currentPageIndex = index;
     });
   }
 
@@ -37,7 +51,7 @@ class _HomePageState extends State<HomePage> {
       child: Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
-          //backgroundColor: Colors.white,
+          backgroundColor: Colors.white,
           toolbarHeight: 80,
           centerTitle: false,
           bottom: TabBar(tabs: [
@@ -55,83 +69,34 @@ class _HomePageState extends State<HomePage> {
         ),
 
         // BOTTOM NAVIGATION BAR
-        bottomNavigationBar: Container(
-          decoration: BoxDecoration(
-            border: Border(
-              top: BorderSide(
-                  color: Color.fromARGB(255, 144, 173, 199), width: 2),
-            ),
-          ),
-          child: BottomNavigationBar(
-            type: BottomNavigationBarType.fixed,
-            currentIndex: _currentPageIndex,
-            onTap: (value) {},
-            backgroundColor: Colors.white,
-            elevation: 0,
-            selectedItemColor: Colors.black,
-            unselectedItemColor: Colors.black,
-            items: [
-              BottomNavigationBarItem(
-                  label: 'Home', icon: Icon(Icons.home, size: 24)),
-              BottomNavigationBarItem(
-                  label: 'Profile', icon: Icon(Icons.person, size: 24)),
-            ],
-          ),
-        ),
+        bottomNavigationBar: _isBottomNavVisible
+            ? Container(
+                decoration: BoxDecoration(
+                  border: Border(
+                    top: BorderSide(
+                        color: Color.fromARGB(255, 144, 173, 199), width: 2),
+                  ),
+                ),
+                child: BottomNavigationBar(
+                  type: BottomNavigationBarType.fixed,
+                  currentIndex: _currentPageIndex,
+                  onTap: _navigateBottomBar,
+                  backgroundColor: Colors.white,
+                  elevation: 0,
+                  selectedItemColor: Colors.black,
+                  unselectedItemColor: Colors.black,
+                  items: [
+                    BottomNavigationBarItem(
+                        label: 'Home', icon: Icon(Icons.home, size: 24)),
+                    BottomNavigationBarItem(
+                        label: 'Profile', icon: Icon(Icons.person, size: 24)),
+                  ],
+                ),
+              )
+            : null,
 
         //BODY
-        body: Column(
-          children: [
-            Expanded(
-              child: TabBarView(
-                children: [
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // Greeting Text
-                      Padding(
-                        padding: EdgeInsets.only(top: 16, bottom: 48),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text('Hello Peter',
-                                style: TextStyle(
-                                    fontSize: 22, fontWeight: FontWeight.bold)),
-                            Text('Energize your day with a quote!',
-                                style: TextStyle(
-                                    fontSize: 12, fontWeight: FontWeight.bold)),
-                          ],
-                        ),
-                      ),
-
-                      // Quote List
-                      Expanded(
-                          child: ListView.builder(
-                        itemCount: quoteList.length,
-                        itemBuilder: (context, index) {
-                          // Get key value pairs in map
-                          String author = quoteList[index][0];
-                          String quoteText = quoteList[index][1];
-
-                          return QuoteWidgetSmall(
-                            author: author,
-                            quoteText: quoteText,
-                            deleteQuote: (context) => deleteQuote(index),
-                          );
-                        },
-                      )),
-                    ],
-                  ),
-
-                  // >>>>>>>>>>> EXPLORE PAGE
-                  Center(child: Text('hatdog')),
-                ],
-              ),
-            ),
-          ],
-        ),
+        body: _pages[_currentPageIndex],
       ),
     );
   }

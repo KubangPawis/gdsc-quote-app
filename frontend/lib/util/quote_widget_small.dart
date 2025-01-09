@@ -29,16 +29,20 @@ class QuoteWidgetSmall extends StatelessWidget {
             ),
           ],
         ),
-        child: Container(
-          padding: EdgeInsets.all(24),
-          decoration: BoxDecoration(
-              color: const Color.fromARGB(255, 255, 143, 135),
-              borderRadius: BorderRadius.circular(10)),
-          child: Column(children: [
-            Text(quoteText, style: TextStyle(fontSize: 12)),
-            SizedBox(height: 3),
-            Text(author, style: TextStyle(fontSize: 11)),
-          ]),
+        child: SizedBox(
+          width: 400,
+          child: Container(
+            padding: EdgeInsets.all(24),
+            decoration: BoxDecoration(
+                color: const Color.fromARGB(255, 255, 143, 135),
+                borderRadius: BorderRadius.circular(10)),
+            child: Column(children: [
+              Text(quoteText,
+                  style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
+              SizedBox(height: 3),
+              Text(author, style: TextStyle(fontSize: 11)),
+            ]),
+          ),
         ),
       ),
     );
