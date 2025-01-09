@@ -7,19 +7,14 @@ class LoginPage extends StatelessWidget {
   final TextEditingController _passwordController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   
-  // Google SignIn instance
   final GoogleSignIn _googleSignIn = GoogleSignIn();
 
-  // Google login function
   Future<void> _loginWithGoogle(BuildContext context) async {
     try {
-      // Initiate Google Sign-In process
       GoogleSignInAccount? user = await _googleSignIn.signIn();
 
-      // If successful, print the user info or navigate to home screen
       if (user != null) {
         print('Logged in with Google: ${user.displayName}');
-        // You can navigate to a new page here (like the home page or dashboard)
       }
     } catch (error) {
       print('Error with Google login: $error');
@@ -68,7 +63,6 @@ class LoginPage extends StatelessWidget {
             ),
             SizedBox(height: 40.0),
 
-            // Form for email and password
             Form(
               key: _formKey,
               child: Column(
