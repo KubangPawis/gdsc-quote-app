@@ -21,16 +21,23 @@ class QuoteWidgetLarge extends StatelessWidget {
         ),
         child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Text(
                 quoteText,
                 style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
+                textAlign: TextAlign.center,
               ),
               SizedBox(height: 36),
               Text(
                 author,
                 style: TextStyle(fontSize: 16, color: Colors.black54),
+                textAlign: TextAlign.center,
+              ),
+              SizedBox(height: 36),
+              IconButton(
+                onPressed: () {},
+                icon: Icon(Icons.favorite_border, size: 24),
               ),
             ]));
   }
