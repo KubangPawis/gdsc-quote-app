@@ -34,7 +34,7 @@ class _SignUpPageState extends State<SignUpPage> {
           SnackBar(content: Text('Sign-up successful: ${user.email}')),
         );
         // You can navigate to another screen after successful sign-up
-        Navigator.pushReplacementNamed(context, '/home');  // Modify '/home' with your screen
+        Navigator.pushReplacementNamed(context, '/login');
       } else {
         // Sign-up failed
         ScaffoldMessenger.of(context).showSnackBar(

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:google_sign_in/google_sign_in.dart'; // Add Google Sign-In import
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:firebase_auth/firebase_auth.dart'; // Add FirebaseAuth import
 import 'sign_up_page.dart';
 
 class LoginPage extends StatelessWidget {
@@ -8,16 +9,53 @@ class LoginPage extends StatelessWidget {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   final GoogleSignIn _googleSignIn = GoogleSignIn();
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
+  LoginPage({super.key});
+
+  Future<void> _loginWithEmailAndPassword(BuildContext context) async {
+    if (_formKey.currentState?.validate() ?? false) {
+      String email = _emailController.text.trim();
+      String password = _passwordController.text.trim();
+
+      try {
+        UserCredential userCredential = await _auth.signInWithEmailAndPassword(
+          email: email,
+          password: password,
+        );
+
+        if (userCredential.user != null) {
+          // Navigate to home page
+          Navigator.pushReplacementNamed(context, '/home');
+        }
+      } catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Login failed: ${e.toString()}')),
+        );
+      }
+    }
+  }
 
   Future<void> _loginWithGoogle(BuildContext context) async {
     try {
       GoogleSignInAccount? user = await _googleSignIn.signIn();
 
       if (user != null) {
-        print('Logged in with Google: ${user.displayName}');
+        GoogleSignInAuthentication googleAuth = await user.authentication;
+        OAuthCredential credential = GoogleAuthProvider.credential(
+          accessToken: googleAuth.accessToken,
+          idToken: googleAuth.idToken,
+        );
+
+        await _auth.signInWithCredential(credential);
+
+        // Navigate to home page
+        Navigator.pushReplacementNamed(context, '/home');
       }
     } catch (error) {
-      print('Error with Google login: $error');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Google login failed: $error')),
+      );
     }
   }
 
@@ -43,7 +81,6 @@ class LoginPage extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Welcome text
               Text(
                 "Welcome Back!",
                 style: TextStyle(
@@ -63,7 +100,6 @@ class LoginPage extends StatelessWidget {
                 ),
               ),
               SizedBox(height: 40.0),
-
               Form(
                 key: _formKey,
                 child: Column(
@@ -112,8 +148,6 @@ class LoginPage extends StatelessWidget {
                       },
                     ),
                     SizedBox(height: 20.0),
-
-                    // Log in button
                     SizedBox(
                       width: double.infinity,
                       child: ElevatedButton(
@@ -121,13 +155,7 @@ class LoginPage extends StatelessWidget {
                           backgroundColor: Color(0xFF283FB1),
                           padding: EdgeInsets.symmetric(vertical: 15.0),
                         ),
-                        onPressed: () {
-                          if (_formKey.currentState?.validate() ?? false) {
-                            print("Email: ${_emailController.text}");
-                            print("Password: ${_passwordController.text}");
-                            // Add your login logic here (e.g., Firebase authentication)
-                          }
-                        },
+                        onPressed: () => _loginWithEmailAndPassword(context),
                         child: Text(
                           "Log In",
                           style: TextStyle(
@@ -139,8 +167,6 @@ class LoginPage extends StatelessWidget {
                       ),
                     ),
                     SizedBox(height: 20.0),
-
-                    // Divider and Google Sign-In button
                     Center(
                       child: Column(
                         children: [
