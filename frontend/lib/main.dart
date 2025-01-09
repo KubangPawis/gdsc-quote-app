@@ -4,6 +4,7 @@ import 'package:frontend/pages/log_in_page.dart';
 import 'package:frontend/pages/sign_up_page.dart';
 import 'package:frontend/pages/home_page.dart';
 
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -25,6 +26,7 @@ class Quode extends StatelessWidget {
         '/login': (context) => LoginPage(), // Login page route
         '/signup': (context) => SignUpPage(), // Sign-up page route
         '/home': (context) => HomePage() // Homepage
+
       },
     );
   }

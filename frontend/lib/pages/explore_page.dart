@@ -1,5 +1,6 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart'; // Firestore import
 import 'package:frontend/util/quote_widget_large.dart';
 
 class ExplorePage extends StatefulWidget {
@@ -14,20 +15,7 @@ class _ExplorePageState extends State<ExplorePage> {
   String quoteText = '';
   String author = '';
 
-  List<List<String>> quoteList = [
-    [
-      'Walt Disney',
-      'The way to get started is to quit talking and begin doing.'
-    ],
-    [
-      'Nelson Mandela',
-      'The greatest glory in living lies not in never falling, but in rising every time we fall.'
-    ],
-    [
-      'Steve Jobs',
-      'The future belongs to those who believe in the beauty of their dreams.'
-    ],
-  ];
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   final List quoteWidgetColorList = [
     Color(0xFFFFE0E0),
@@ -39,18 +27,35 @@ class _ExplorePageState extends State<ExplorePage> {
     Color(0xFFFFBD94),
   ];
 
+  List<Map<String, dynamic>> quotes = []; // Holds quotes from Firestore
+
   @override
   void initState() {
     super.initState();
-    // Set an initial color
-    currentColor = quoteWidgetColorList[0];
-    updateQuote();
+    fetchQuotes();
+  }
+
+  // Fetch all quotes from Firestore
+  Future<void> fetchQuotes() async {
+    try {
+      final snapshot = await _firestore.collection('quotes').get();
+      setState(() {
+        quotes = snapshot.docs.map((doc) => doc.data() as Map<String, dynamic>).toList();
+        if (quotes.isNotEmpty) {
+          updateQuote(); // Initialize the first quote
+        }
+      });
+    } catch (e) {
+      print('Error fetching quotes: $e');
+    }
   }
 
   void updateQuote() {
+    if (quotes.isEmpty) return;
+    final randomQuote = quotes[Random().nextInt(quotes.length)];
     setState(() {
-      author = quoteList[Random().nextInt(quoteList.length)][0];
-      quoteText = quoteList[Random().nextInt(quoteList.length)][1];
+      author = randomQuote['author'] ?? 'Unknown';
+      quoteText = randomQuote['quote'] ?? 'No quote available';
     });
   }
 
