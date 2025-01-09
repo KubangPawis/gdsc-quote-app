@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/pages/log_in_page.dart';
-import 'package:frontend/pages/home_page.dart';
 
 void main() {
   runApp(const Quode());
