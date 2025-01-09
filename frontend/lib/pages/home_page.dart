@@ -24,6 +24,12 @@ class _HomePageState extends State<HomePage> {
 
   int _currentPageIndex = 0;
 
+  void deleteQuote(int index) {
+    setState(() {
+      quoteList.removeAt(index);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -31,7 +37,7 @@ class _HomePageState extends State<HomePage> {
       child: Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
-          backgroundColor: Colors.white,
+          //backgroundColor: Colors.white,
           toolbarHeight: 80,
           centerTitle: false,
           bottom: TabBar(tabs: [
@@ -79,47 +85,47 @@ class _HomePageState extends State<HomePage> {
             Expanded(
               child: TabBarView(
                 children: [
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 38),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        // Greeting Text
-                        Padding(
-                          padding: EdgeInsets.only(top: 16, bottom: 48),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text('Hello Peter',
-                                  style: TextStyle(
-                                      fontSize: 22,
-                                      fontWeight: FontWeight.bold)),
-                              Text('Energize your day with a quote!',
-                                  style: TextStyle(
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.bold)),
-                            ],
-                          ),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Greeting Text
+                      Padding(
+                        padding: EdgeInsets.only(top: 16, bottom: 48),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text('Hello Peter',
+                                style: TextStyle(
+                                    fontSize: 22, fontWeight: FontWeight.bold)),
+                            Text('Energize your day with a quote!',
+                                style: TextStyle(
+                                    fontSize: 12, fontWeight: FontWeight.bold)),
+                          ],
                         ),
+                      ),
 
-                        // Quote List
-                        Expanded(
-                            child: ListView.builder(
-                          itemCount: quoteList.length,
-                          itemBuilder: (context, index) {
-                            // Get key value pairs in map
-                            String author = quoteList[index][0];
-                            String quoteText = quoteList[index][1];
+                      // Quote List
+                      Expanded(
+                          child: ListView.builder(
+                        itemCount: quoteList.length,
+                        itemBuilder: (context, index) {
+                          // Get key value pairs in map
+                          String author = quoteList[index][0];
+                          String quoteText = quoteList[index][1];
 
-                            return QuoteWidgetSmall(
-                                author: author, quoteText: quoteText);
-                          },
-                        )),
-                      ],
-                    ),
+                          return QuoteWidgetSmall(
+                            author: author,
+                            quoteText: quoteText,
+                            deleteQuote: (context) => deleteQuote(index),
+                          );
+                        },
+                      )),
+                    ],
                   ),
+
+                  // >>>>>>>>>>> EXPLORE PAGE
                   Center(child: Text('hatdog')),
                 ],
               ),
