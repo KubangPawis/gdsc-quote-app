@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "88003395420",
+    "firebase_url": "https://gdsc-quote-app-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "gdsc-quote-app",
+    "storage_bucket": "gdsc-quote-app.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:88003395420:android:1fb69215bb0f99d2220b99",
+        "android_client_info": {
+          "package_name": "com.example.frontend"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "88003395420-vcbjj92ojbped0fm01fg6vn1k6qi8t84.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.frontend",
+            "certificate_hash": "7b98888db921be38b262c8270cefd5cff18d3166"
+          }
+        },
+        {
+          "client_id": "88003395420-bc72os28n6cr0u36ohdqvc7k7nknfos8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBKqVcMNRjcSoIjrkQaV9us8gMKYEMA18s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "88003395420-bc72os28n6cr0u36ohdqvc7k7nknfos8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
