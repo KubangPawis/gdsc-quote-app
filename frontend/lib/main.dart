@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/pages/sign_up_page.dart';
+import 'package:frontend/pages/log_in_page.dart';
 
 void main() {
   runApp(const Quode());
@@ -13,7 +13,7 @@ class Quode extends StatelessWidget {
     return MaterialApp(
       title: 'Quode',
       debugShowCheckedModeBanner: false,
-      home: SignUpPage(),
+      home: LoginPage(),
     );
   }
 }
