@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_core/firebase_core.dart'; // Add Firebase Core
+import 'home_page.dart'; // Create this page for the quotes display
+import 'favorites_page.dart'; // Create this page for the favorites list
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(); // Initialize Firebase
   runApp(const Quode());
 }
 
@@ -12,7 +17,13 @@ class Quode extends StatelessWidget {
     return MaterialApp(
       title: 'Quode',
       debugShowCheckedModeBanner: false,
-      home: Scaffold(),
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: const HomePage(), // Set the HomePage as the starting point
+      routes: {
+        '/favorites': (context) => FavoritesPage(), // Add navigation for the Favorites page
+      },
     );
   }
 }
