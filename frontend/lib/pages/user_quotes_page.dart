@@ -42,63 +42,48 @@ class _UserQuotesPageState extends State<UserQuotesPage> {
   @override
   Widget build(BuildContext context) {
     return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Expanded(
-          child: TabBarView(
+        // Greeting Text
+        Padding(
+          padding: EdgeInsets.symmetric(
+            horizontal: 24,
+            vertical: 32,
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Greeting Text
-                  Padding(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 24,
-                      vertical: 32,
-                    ),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text('Hello, Peter!',
-                            style: TextStyle(
-                                fontSize: 22, fontWeight: FontWeight.bold)),
-                        Text('Energize your day with a quote!',
-                            style: TextStyle(
-                                fontSize: 12, fontWeight: FontWeight.bold)),
-                      ],
-                    ),
-                  ),
-
-                  // Quote List
-                  Expanded(
-                      child: ListView.builder(
-                    itemCount: quoteList.length,
-                    itemBuilder: (context, index) {
-                      // Get key value pairs in map
-                      String author = quoteList[index][0];
-                      String quoteText = quoteList[index][1];
-
-                      // Get random color
-                      var widgetColor = quoteWidgetColorList[
-                          Random().nextInt(quoteWidgetColorList.length)];
-
-                      return QuoteWidgetSmall(
-                        widgetColor: widgetColor,
-                        author: author,
-                        quoteText: quoteText,
-                        deleteQuote: (context) => deleteQuote(index),
-                      );
-                    },
-                  )),
-                ],
-              ),
-
-              // >>>>>>>>>>> EXPLORE PAGE
-              Center(child: Text('hatdog')),
+              Text('Hello, Peter!',
+                  style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
+              Text('Energize your day with a quote!',
+                  style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
             ],
           ),
         ),
+
+        // Quote List
+        Expanded(
+            child: ListView.builder(
+          itemCount: quoteList.length,
+          itemBuilder: (context, index) {
+            // Get key value pairs in map
+            String author = quoteList[index][0];
+            String quoteText = quoteList[index][1];
+
+            // Get random color
+            var widgetColor = quoteWidgetColorList[
+                Random().nextInt(quoteWidgetColorList.length)];
+
+            return QuoteWidgetSmall(
+              widgetColor: widgetColor,
+              author: author,
+              quoteText: quoteText,
+              deleteQuote: (context) => deleteQuote(index),
+            );
+          },
+        )),
       ],
     );
   }

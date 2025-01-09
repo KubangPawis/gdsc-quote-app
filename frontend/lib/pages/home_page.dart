@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/pages/user_quotes_page.dart';
+import 'package:frontend/pages/home_staging_page.dart';
 import 'package:frontend/pages/profile_page.dart';
 
 class HomePage extends StatefulWidget {
@@ -16,7 +16,7 @@ class _HomePageState extends State<HomePage>
   bool _isBottomNavVisible = true;
 
   final List _pages = [
-    UserQuotesPage(),
+    HomeStagingPage(),
     ProfilePage(),
   ];
 
