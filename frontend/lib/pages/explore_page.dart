@@ -35,6 +35,8 @@ class _ExplorePageState extends State<ExplorePage> {
   @override
   void initState() {
     super.initState();
+    currentColor =
+        quoteWidgetColorList[Random().nextInt(quoteWidgetColorList.length)];
     fetchQuotes();
   }
 
@@ -43,7 +45,9 @@ class _ExplorePageState extends State<ExplorePage> {
     try {
       final snapshot = await _firestore.collection('quotes').get();
       setState(() {
-        quotes = snapshot.docs.map((doc) => doc.data() as Map<String, dynamic>).toList();
+        quotes = snapshot.docs
+            .map((doc) => doc.data() as Map<String, dynamic>)
+            .toList();
         if (quotes.isNotEmpty) {
           updateQuote(); // Initialize the first quote
         }
