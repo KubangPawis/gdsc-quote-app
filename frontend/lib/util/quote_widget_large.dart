@@ -1,19 +1,23 @@
+import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class QuoteWidgetLarge extends StatefulWidget {
-  bool isFavorite;
+  bool isFavorite; // Removed 'final'
   final Color widgetColor;
   final String quoteText;
   final String author;
+  final VoidCallback onDownloadPressed;
 
-  QuoteWidgetLarge(
-      {super.key,
-      this.isFavorite = false,
-      required this.widgetColor,
-      required this.quoteText,
-      required this.author});
+  QuoteWidgetLarge({
+    super.key,
+    required this.isFavorite,
+    required this.widgetColor,
+    required this.quoteText,
+    required this.author,
+    required this.onDownloadPressed,
+  });
 
   @override
   State<QuoteWidgetLarge> createState() => _QuoteWidgetLargeState();
@@ -65,39 +69,54 @@ class _QuoteWidgetLargeState extends State<QuoteWidgetLarge> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return RepaintBoundary(
+      child: Container(
         padding: EdgeInsets.symmetric(horizontal: 36),
         decoration: BoxDecoration(
           color: widget.widgetColor,
           borderRadius: BorderRadius.circular(10),
         ),
         child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              SingleChildScrollView(
-                child: Text(
-                  widget.quoteText,
-                  maxLines: 4,
-                  style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
-                  textAlign: TextAlign.center,
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ),
-              SizedBox(height: 36),
-              Text(
-                widget.author,
-                style: TextStyle(fontSize: 16, color: Colors.black54),
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            SingleChildScrollView(
+              child: Text(
+                widget.quoteText,
+                maxLines: 4,
+                style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
                 textAlign: TextAlign.center,
+                overflow: TextOverflow.ellipsis,
               ),
-              SizedBox(height: 36),
-              IconButton(
-                icon: Icon(
-                  widget.isFavorite ? Icons.favorite : Icons.favorite_border,
-                  color: widget.isFavorite ? Colors.red : Colors.grey,
+            ),
+            SizedBox(height: 36),
+            Text(
+              widget.author,
+              style: TextStyle(fontSize: 16, color: Colors.black54),
+              textAlign: TextAlign.center,
+            ),
+            SizedBox(height: 36),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                IconButton(
+                  icon: Icon(
+                    widget.isFavorite
+                        ? Icons.favorite
+                        : Icons.favorite_border,
+                    color: widget.isFavorite ? Colors.red : Colors.grey,
+                  ),
+                  onPressed: toggleFavorite,
                 ),
-                onPressed: toggleFavorite,
-              ),
-            ]));
+                IconButton(
+                  icon: Icon(Icons.download, color: Colors.grey),
+                  onPressed: widget.onDownloadPressed,
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }

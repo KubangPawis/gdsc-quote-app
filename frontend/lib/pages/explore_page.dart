@@ -1,8 +1,13 @@
 import 'dart:math';
+import 'dart:ui' as ui;
+import 'dart:io';
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:frontend/util/quote_widget_large.dart';
+import 'package:flutter/rendering.dart';
 
 class ExplorePage extends StatefulWidget {
   const ExplorePage({super.key});
@@ -15,10 +20,11 @@ class _ExplorePageState extends State<ExplorePage> {
   Color currentColor = Colors.lightBlueAccent;
   String quoteText = '';
   String author = '';
-  bool isFavorite = false; // Tracks favorite status
+  bool isFavorite = false;
 
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  final FirebaseAuth _auth = FirebaseAuth.instance; // Firebase Auth instance
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final GlobalKey globalKey = GlobalKey(); // For RepaintBoundary
 
   final List quoteWidgetColorList = [
     Color(0xFFFFE0E0),
@@ -30,7 +36,7 @@ class _ExplorePageState extends State<ExplorePage> {
     Color(0xFFFFBD94),
   ];
 
-  List<Map<String, dynamic>> quotes = []; // Holds quotes from Firestore
+  List<Map<String, dynamic>> quotes = [];
 
   @override
   void initState() {
@@ -40,7 +46,6 @@ class _ExplorePageState extends State<ExplorePage> {
     fetchQuotes();
   }
 
-  // Fetch all quotes from Firestore
   Future<void> fetchQuotes() async {
     try {
       final snapshot = await _firestore.collection('quotes').get();
@@ -49,7 +54,7 @@ class _ExplorePageState extends State<ExplorePage> {
             .map((doc) => doc.data() as Map<String, dynamic>)
             .toList();
         if (quotes.isNotEmpty) {
-          updateQuote(); // Initialize the first quote
+          updateQuote();
         }
       });
     } catch (e) {
@@ -79,9 +84,9 @@ class _ExplorePageState extends State<ExplorePage> {
     setState(() {
       author = randomQuote['author'] ?? 'Unknown';
       quoteText = randomQuote['quote'] ?? 'No quote available';
-      isFavorite = false; // Reset favorite status for new quote
+      isFavorite = false;
     });
-    checkIfFavorite(); // Check if this quote is already a favorite
+    checkIfFavorite();
   }
 
   void changeColor() {
@@ -89,6 +94,25 @@ class _ExplorePageState extends State<ExplorePage> {
       currentColor =
           quoteWidgetColorList[Random().nextInt(quoteWidgetColorList.length)];
     });
+  }
+
+  Future<void> saveQuoteAsImage() async {
+    try {
+      RenderRepaintBoundary boundary =
+          globalKey.currentContext?.findRenderObject() as RenderRepaintBoundary;
+      ui.Image image = await boundary.toImage(pixelRatio: 2.0);
+      ByteData? byteData = await image.toByteData(format: ui.ImageByteFormat.png);
+      if (byteData != null) {
+        final buffer = byteData.buffer;
+        final directory = await getApplicationDocumentsDirectory();
+        final filePath = '${directory.path}/quote_${DateTime.now().millisecondsSinceEpoch}.png';
+        File file = File(filePath);
+        await file.writeAsBytes(buffer.asUint8List());
+        print('Image saved at $filePath');
+      }
+    } catch (e) {
+      print('Error saving image: $e');
+    }
   }
 
   @override
@@ -104,17 +128,21 @@ class _ExplorePageState extends State<ExplorePage> {
           changeColor();
           updateQuote();
         },
-        child: Column(
-          children: [
-            Expanded(
-              child: QuoteWidgetLarge(
-                isFavorite: isFavorite,
-                widgetColor: currentColor,
-                quoteText: quoteText,
-                author: author,
+        child: RepaintBoundary(
+          key: globalKey,
+          child: Column(
+            children: [
+              Expanded(
+                child: QuoteWidgetLarge(
+                  isFavorite: isFavorite,
+                  widgetColor: currentColor,
+                  quoteText: quoteText,
+                  author: author,
+                  onDownloadPressed: saveQuoteAsImage,
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
