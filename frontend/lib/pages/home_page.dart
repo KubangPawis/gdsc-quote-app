@@ -63,7 +63,13 @@ class _HomePageState extends State<HomePage>
                 fontWeight: FontWeight.bold,
               )),
           actions: [
-            IconButton(onPressed: () {}, icon: Icon(Icons.logout, size: 24))
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+              child: IconButton(
+                  onPressed: () =>
+                      Navigator.pushReplacementNamed(context, '/login'),
+                  icon: Icon(Icons.logout, color: Colors.black87, size: 24)),
+            )
           ],
         ),
 
