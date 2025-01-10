@@ -23,10 +23,14 @@ class QuoteWidgetLarge extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Text(
-                quoteText,
-                style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
-                textAlign: TextAlign.center,
+              SingleChildScrollView(
+                child: Text(
+                  quoteText,
+                  maxLines: 4,
+                  style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
+                  textAlign: TextAlign.center,
+                  overflow: TextOverflow.ellipsis,
+                ),
               ),
               SizedBox(height: 36),
               Text(
