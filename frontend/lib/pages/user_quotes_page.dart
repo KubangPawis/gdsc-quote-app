@@ -25,7 +25,8 @@ class _UserQuotesPageState extends State<UserQuotesPage> {
     Color(0xFFFFBD94),
   ];
 
-  List<Map<String, dynamic>> favoriteQuotes = []; // Holds user's favorite quotes
+  List<Map<String, dynamic>> favoriteQuotes =
+      []; // Holds user's favorite quotes
 
   @override
   void initState() {
@@ -111,10 +112,17 @@ class _UserQuotesPageState extends State<UserQuotesPage> {
         Expanded(
           child: favoriteQuotes.isEmpty
               ? Center(
-                  child: Text(
-                    'No favorite quotes yet. Start exploring and add some!',
-                    style: TextStyle(fontSize: 16, fontStyle: FontStyle.italic),
-                    textAlign: TextAlign.center,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: SizedBox(
+                      width: 300,
+                      child: Text(
+                        'No favorite quotes found. Start exploring and add some!',
+                        style: TextStyle(
+                            fontSize: 16, fontStyle: FontStyle.italic),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
                   ),
                 )
               : ListView.builder(
