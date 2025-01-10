@@ -91,46 +91,6 @@ class _ExplorePageState extends State<ExplorePage> {
     });
   }
 
-  // Future<void> toggleFavorite() async {
-  //   final user = _auth.currentUser;
-
-  //   if (user == null) {
-  //     print('User is not authenticated');
-  //     return;
-  //   }
-
-  //   final favoritesRef =
-  //       _firestore.collection('users').doc(user.uid).collection('favorites');
-
-  //   try {
-  //     if (isFavorite) {
-  //       // Remove the quote from favorites
-  //       final snapshot = await favoritesRef
-  //           .where('quote', isEqualTo: quoteText)
-  //           .where('author', isEqualTo: author)
-  //           .get();
-
-  //       for (var doc in snapshot.docs) {
-  //         await doc.reference.delete();
-  //       }
-  //     } else {
-  //       // Add the quote to favorites
-  //       await favoritesRef.add({
-  //         'author': author,
-  //         'quote': quoteText,
-  //         'addedAt': FieldValue.serverTimestamp(),
-  //       });
-  //     }
-
-  //     // Toggle the favorite state
-  //     setState(() {
-  //       isFavorite = !isFavorite;
-  //     });
-  //   } catch (e) {
-  //     print('Error updating favorites: $e');
-  //   }
-  // }
-
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -154,13 +114,6 @@ class _ExplorePageState extends State<ExplorePage> {
                 author: author,
               ),
             ),
-            // IconButton(
-            //   icon: Icon(
-            //     isFavorite ? Icons.favorite : Icons.favorite_border,
-            //     color: isFavorite ? Colors.red : Colors.grey,
-            //   ),
-            //   onPressed: toggleFavorite,
-            // ),
           ],
         ),
       ),
